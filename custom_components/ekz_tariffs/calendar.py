@@ -3,11 +3,11 @@ from __future__ import annotations
 import contextlib
 import datetime as dt
 
-from custom_components.ekz_tariffs.api import TariffSlot
+from .api import TariffSlot
 from homeassistant.components.calendar import CalendarEntity, CalendarEvent
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
-from homeassistant.helpers.entity import DeviceInfo
+from homeassistant.helpers.device_registry import DeviceInfo
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.helpers.event import async_track_point_in_time
 from homeassistant.util import dt as dt_util
