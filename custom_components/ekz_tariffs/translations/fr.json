@@ -14,7 +14,8 @@
         "data": {
           "tariff_name": "Nom du tarif",
           "include_vat": "Inclure la TVA (8,1%)",
-          "regional_fee": "Redevance régionale"
+          "regional_fee": "Redevance régionale",
+          "integrated_suffix": "EKZ Einsiedeln"
         }
       },
       "pick_implementation": {
@@ -51,7 +52,8 @@
         "description": "Ajuster les paramètres de votre intégration tarifaire",
         "data": {
           "include_vat": "Inclure la TVA (8,1%)",
-          "regional_fee": "Redevance régionale"
+          "regional_fee": "Redevance régionale",
+          "integrated_suffix": "Suffixe région Einsiedeln"
         }
       }
     }

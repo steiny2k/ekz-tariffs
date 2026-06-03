@@ -14,7 +14,8 @@
         "data": {
           "tariff_name": "Tarifname",
           "include_vat": "MwSt. einbeziehen (8,1%)",
-          "regional_fee": "Regionale Abgabe"
+          "regional_fee": "Regionale Abgabe",
+          "integrated_suffix": "EKZ Einsiedeln"
         }
       },
       "pick_implementation": {
@@ -51,7 +52,8 @@
         "description": "Einstellungen für Ihre Tarifintegration anpassen",
         "data": {
           "include_vat": "MwSt. einbeziehen (8,1%)",
-          "regional_fee": "Regionale Abgabe"
+          "regional_fee": "Regionale Abgabe",
+          "integrated_suffix": "Einsiedeln-Region-Suffix"
         }
       }
     }

@@ -14,7 +14,8 @@
         "data": {
           "tariff_name": "Tariff Name",
           "include_vat": "Include VAT (8.1%)",
-          "regional_fee": "Regional fee surcharge"
+          "regional_fee": "Regional fee surcharge",
+          "integrated_suffix": "EKZ Einsiedeln"
         }
       },
       "pick_implementation": {
@@ -51,7 +52,8 @@
         "description": "Adjust settings for your tariff integration",
         "data": {
           "include_vat": "Include VAT (8.1%)",
-          "regional_fee": "Regional fee surcharge"
+          "regional_fee": "Regional fee surcharge",
+          "integrated_suffix": "Einsiedeln region suffix"
         }
       }
     }

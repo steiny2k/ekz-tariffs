@@ -14,7 +14,8 @@
         "data": {
           "tariff_name": "Nome tariffa",
           "include_vat": "Includi IVA (8,1%)",
-          "regional_fee": "Supplemento regionale"
+          "regional_fee": "Supplemento regionale",
+          "integrated_suffix": "EKZ Einsiedeln"
         }
       },
       "pick_implementation": {
@@ -51,7 +52,8 @@
         "description": "Regola le impostazioni per la tua integrazione tariffaria",
         "data": {
           "include_vat": "Includi IVA (8,1%)",
-          "regional_fee": "Supplemento regionale"
+          "regional_fee": "Supplemento regionale",
+          "integrated_suffix": "Suffisso regione Einsiedeln"
         }
       }
     }
