@@ -8,6 +8,7 @@ CONF_AUTH_TYPE = "auth_type"
 CONF_EMS_INSTANCE_ID = "ems_instance_id"
 CONF_INCLUDE_VAT = "include_vat"
 CONF_REGIONAL_FEE = "regional_fee"
+CONF_INTEGRATED_SUFFIX = "integrated_suffix"
 REGIONAL_FEE_NONE = "none"
 REGIONAL_FEE_CHOICES = [
     "none",
@@ -34,6 +35,8 @@ OAUTH2_TOKEN = "https://login.ekz.ch/auth/realms/myEKZ/protocol/openid-connect/t
 OAUTH2_SCOPES = ["openid", "offline_access"]
 
 INTEGRATED_PREFIX = "integrated_"
+INTEGRATED_SUFFIX_NONE = ""
+INTEGRATED_SUFFIX_EINSIEDELN = "_E"
 
 FETCH_HOUR = 18
 FETCH_MINUTE = 30

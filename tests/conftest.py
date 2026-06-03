@@ -4,7 +4,14 @@ import datetime as dt
 from unittest.mock import patch
 
 import pytest
-from custom_components.ekz_tariffs.const import CONF_TARIFF_NAME, DOMAIN
+from custom_components.ekz_tariffs.const import (
+    CONF_AUTH_TYPE,
+    CONF_INTEGRATED_SUFFIX,
+    CONF_TARIFF_NAME,
+    DOMAIN,
+    INTEGRATED_SUFFIX_NONE,
+    AUTH_TYPE_PUBLIC,
+)
 from homeassistant.core import HomeAssistant
 from homeassistant.util import dt as dt_util
 from pytest_homeassistant_custom_component.common import MockConfigEntry
@@ -20,7 +27,11 @@ def mock_config_entry() -> MockConfigEntry:
     return MockConfigEntry(
         domain=DOMAIN,
         title="EKZ 400D",
-        data={CONF_TARIFF_NAME: "400D"},
+        data={
+            CONF_AUTH_TYPE: AUTH_TYPE_PUBLIC,
+            CONF_TARIFF_NAME: "400D",
+            CONF_INTEGRATED_SUFFIX: INTEGRATED_SUFFIX_NONE,
+        },
         unique_id="ekz_tariffs_400D",
     )
 

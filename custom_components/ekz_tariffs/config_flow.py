@@ -17,10 +17,13 @@ from .const import (
     CONF_AUTH_TYPE,
     CONF_EMS_INSTANCE_ID,
     CONF_INCLUDE_VAT,
+    CONF_INTEGRATED_SUFFIX,
     CONF_REGIONAL_FEE,
     CONF_TARIFF_NAME,
     DEFAULT_TARIFF_NAME,
     DOMAIN,
+    INTEGRATED_SUFFIX_EINSIEDELN,
+    INTEGRATED_SUFFIX_NONE,
     OAUTH2_SCOPES,
     REGIONAL_FEE_CHOICES,
     REGIONAL_FEE_NONE,
@@ -91,9 +94,10 @@ class OAuth2FlowHandler(
                         TARIFF_CHOICES
                     ),
                     vol.Optional(CONF_INCLUDE_VAT, default=False): bool,
-                    vol.Optional(
-                        CONF_REGIONAL_FEE, default=REGIONAL_FEE_NONE
-                    ): vol.In(REGIONAL_FEE_CHOICES),
+                    vol.Optional(CONF_REGIONAL_FEE, default=REGIONAL_FEE_NONE): vol.In(
+                        REGIONAL_FEE_CHOICES
+                    ),
+                    vol.Optional(CONF_INTEGRATED_SUFFIX, default=False): bool,
                 }
             )
             return self.async_show_form(step_id="public_config", data_schema=schema)
@@ -103,6 +107,12 @@ class OAuth2FlowHandler(
         )
         self._abort_if_unique_id_configured()
 
+        integrated_suffix = (
+            INTEGRATED_SUFFIX_EINSIEDELN
+            if user_input.get(CONF_INTEGRATED_SUFFIX, False)
+            else INTEGRATED_SUFFIX_NONE
+        )
+
         return self.async_create_entry(
             title=f"EKZ {user_input[CONF_TARIFF_NAME]}",
             data={
@@ -110,6 +120,7 @@ class OAuth2FlowHandler(
                 CONF_TARIFF_NAME: user_input[CONF_TARIFF_NAME],
                 CONF_INCLUDE_VAT: user_input.get(CONF_INCLUDE_VAT, False),
                 CONF_REGIONAL_FEE: user_input.get(CONF_REGIONAL_FEE, REGIONAL_FEE_NONE),
+                CONF_INTEGRATED_SUFFIX: integrated_suffix,
             },
         )
 
@@ -243,9 +254,7 @@ class OAuth2FlowHandler(
                 CONF_AUTH_TYPE: AUTH_TYPE_OAUTH,
                 CONF_EMS_INSTANCE_ID: self.ems_instance_id,
                 CONF_INCLUDE_VAT: user_input.get(CONF_INCLUDE_VAT, False),
-                CONF_REGIONAL_FEE: user_input.get(
-                    CONF_REGIONAL_FEE, REGIONAL_FEE_NONE
-                ),
+                CONF_REGIONAL_FEE: user_input.get(CONF_REGIONAL_FEE, REGIONAL_FEE_NONE),
                 **self.oauth_data,
             },
         )
@@ -277,6 +286,13 @@ class EkzTariffsOptionsFlow(config_entries.OptionsFlow):
     ) -> FlowResult:
         """Manage the options."""
         if user_input is not None:
+            # Determine integrated_suffix from checkbox input
+            integrated_suffix = (
+                INTEGRATED_SUFFIX_EINSIEDELN
+                if user_input.get(CONF_INTEGRATED_SUFFIX, False)
+                else INTEGRATED_SUFFIX_NONE
+            )
+
             # Update the config entry
             self.hass.config_entries.async_update_entry(
                 self.config_entry,
@@ -284,6 +300,7 @@ class EkzTariffsOptionsFlow(config_entries.OptionsFlow):
                     **self.config_entry.data,
                     CONF_INCLUDE_VAT: user_input[CONF_INCLUDE_VAT],
                     CONF_REGIONAL_FEE: user_input[CONF_REGIONAL_FEE],
+                    CONF_INTEGRATED_SUFFIX: integrated_suffix,
                 },
             )
             # Reload the integration to apply changes
@@ -296,13 +313,15 @@ class EkzTariffsOptionsFlow(config_entries.OptionsFlow):
         current_regional_fee = self.config_entry.data.get(
             CONF_REGIONAL_FEE, REGIONAL_FEE_NONE
         )
+        current_integrated_suffix = self.config_entry.data.get(
+            CONF_INTEGRATED_SUFFIX, INTEGRATED_SUFFIX_NONE
+        )
 
         # OAuth path: checkbox (API returns the customer's actual fees)
         # Public path: dropdown (user must select the right regional fee)
         if auth_type == AUTH_TYPE_OAUTH:
             regional_fee_default = bool(
-                current_regional_fee
-                and current_regional_fee != REGIONAL_FEE_NONE
+                current_regional_fee and current_regional_fee != REGIONAL_FEE_NONE
             )
             regional_fee_field = vol.Optional(
                 CONF_REGIONAL_FEE, default=regional_fee_default
@@ -320,6 +339,11 @@ class EkzTariffsOptionsFlow(config_entries.OptionsFlow):
                     vol.Optional(
                         CONF_REGIONAL_FEE, default=current_regional_fee
                     ): vol.In(REGIONAL_FEE_CHOICES),
+                    vol.Optional(
+                        CONF_INTEGRATED_SUFFIX,
+                        default=current_integrated_suffix
+                        == INTEGRATED_SUFFIX_EINSIEDELN,
+                    ): bool,
                 }
             )
 

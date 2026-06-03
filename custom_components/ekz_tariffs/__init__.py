@@ -17,12 +17,14 @@ from .const import (
     CONF_AUTH_TYPE,
     CONF_EMS_INSTANCE_ID,
     CONF_INCLUDE_VAT,
+    CONF_INTEGRATED_SUFFIX,
     CONF_REGIONAL_FEE,
     CONF_TARIFF_NAME,
     DEFAULT_TARIFF_NAME,
     DOMAIN,
     FETCH_HOUR,
     FETCH_MINUTE,
+    INTEGRATED_SUFFIX_NONE,
     PLATFORMS,
     REGIONAL_FEE_NONE,
     SERVICE_CHECK_EMS_LINK_STATUS,
@@ -127,6 +129,9 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
         tariff_name = entry.data.get(CONF_TARIFF_NAME, DEFAULT_TARIFF_NAME)
         include_vat = entry.data.get(CONF_INCLUDE_VAT, False)
         regional_fee = entry.data.get(CONF_REGIONAL_FEE, REGIONAL_FEE_NONE)
+        integrated_suffix = entry.data.get(
+            CONF_INTEGRATED_SUFFIX, INTEGRATED_SUFFIX_NONE
+        )
         session = async_get_clientsession(hass)
         api = EkzTariffsApi(session)
         coordinator = EkzTariffsCoordinator(
@@ -136,6 +141,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
             store,
             incl_vat=include_vat,
             regional_fee=regional_fee,
+            integrated_suffix=integrated_suffix,
         )
 
         device_name = f"EKZ Tariff {tariff_name}"

@@ -11,7 +11,7 @@ from homeassistant.helpers.update_coordinator import DataUpdateCoordinator, Upda
 from homeassistant.util import dt as dt_util
 
 from .api import EkzTariffsApi, EkzTariffsOAuthApi, TariffSlot
-from .const import DOMAIN
+from .const import DOMAIN, INTEGRATED_SUFFIX_NONE
 from .storage import slots_to_json
 
 _LOGGER = logging.getLogger(__name__)
@@ -59,6 +59,7 @@ class EkzTariffsCoordinator(DataUpdateCoordinator[list[TariffSlot]]):
         store: Store,
         incl_vat: bool = False,
         regional_fee: str | None = None,
+        integrated_suffix: str = INTEGRATED_SUFFIX_NONE,
     ):
         super().__init__(
             hass,
@@ -72,6 +73,7 @@ class EkzTariffsCoordinator(DataUpdateCoordinator[list[TariffSlot]]):
         self._store = store
         self._incl_vat = incl_vat
         self._regional_fee = regional_fee
+        self._integrated_suffix = integrated_suffix
 
     async def _async_update_data(self) -> list[TariffSlot]:
         try:
@@ -90,6 +92,7 @@ class EkzTariffsCoordinator(DataUpdateCoordinator[list[TariffSlot]]):
                 end=end,
                 incl_vat=self._incl_vat,
                 regional_fee=self._regional_fee,
+                integrated_suffix=self._integrated_suffix,
             )
             await self._store.async_save({"slots": slots_to_json(slots)})
             return slots

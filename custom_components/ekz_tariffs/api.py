@@ -15,6 +15,7 @@ from .const import (
     API_EMS_LINK_STATUS_PATH,
     API_TARIFFS_PATH,
     INTEGRATED_PREFIX,
+    INTEGRATED_SUFFIX_NONE,
     REGIONAL_FEE_NONE,
     VAT_RATE,
 )
@@ -58,13 +59,14 @@ class EkzTariffsApi:
         end: datetime,
         incl_vat: bool = False,
         regional_fee: str | None = None,
+        integrated_suffix: str = INTEGRATED_SUFFIX_NONE,
     ) -> list[TariffSlot]:
         """Fetch tariff slots from EKZ public API for time range."""
         start = dt_util.as_local(start)
         end = dt_util.as_local(end)
 
         params = {
-            "tariff_name": f"{INTEGRATED_PREFIX}{tariff_name}",
+            "tariff_name": f"{INTEGRATED_PREFIX}{tariff_name}{integrated_suffix}",
             "start_timestamp": start.isoformat(timespec="seconds"),
             "end_timestamp": end.isoformat(timespec="seconds"),
         }
